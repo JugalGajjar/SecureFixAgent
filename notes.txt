@@ -7,6 +7,10 @@ Static analysis tools like Bandit and SonarQube offer rule-based precision for d
 
 This research proposes a hybrid agent that combines static analyzers and small, local LLMs to achieve high-quality detection and repair of Python security vulnerabilities.
 
+Relation to Previous Work:
+──────────────────────────
+This project builds upon our prior published research, MalCodeAI, which focused on leveraging LLMs for malicious code classification and repair. While MalCodeAI addressed general-purpose malicious code detection, SecureFixAgent advances the idea further by integrating static analysis tools (like Bandit) with LLM-based agents for fine-grained vulnerability classification, explanation, and repair in Python. The hybrid setup and agentic loop introduced here mark a significant evolution in capability and autonomy over our previous work.
+
 Research Goal:
 ──────────────
 To enhance static vulnerability detection and automated repair in Python code by developing an intelligent LLM-based agent that collaborates with traditional static analysis tools, specifically Bandit. The proposed agent will leverage lightweight, open-source code-oriented LLMs (≤8B parameters) to classify, explain, and generate secure fixes for vulnerabilities detected in Python programs. Beyond single-shot patching, the agent will perform iterative self-correction, decide when to re-run Bandit for validation, and autonomously determine whether additional repair attempts are required—thereby exhibiting core properties of reasoning and autonomy expected in modern AI agents. This research focuses on integrating static analysis outputs with LLM reasoning to improve real-world code security in a low-latency, local setting.
