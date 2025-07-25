@@ -40,7 +40,7 @@ To enhance static vulnerability detection and automated repair in Python code by
 
 ## 🧠 LLM Agent Capabilities
 
-- **Classification**: Categorizes issues as  `True Positive │ False Positive │ True Negative │ False Negative │ Not Sure`
+- **Classification**: Categorizes issues as  `True Positive │ False Positive │ Not Sure`
 - **Explanation**: Produces concise, CWE-style natural language descriptions
 - **Fix Generation**: Applies secure patches to maintain functionality
 
