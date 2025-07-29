@@ -1,0 +1,13 @@
+Analyze the following Python code snippet and the Bandit report:
+
+---
+
+Code Snippet:
+```python
+{code_snippet}
+```
+
+---
+
+Bandit Report:
+{report}
