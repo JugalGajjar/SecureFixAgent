@@ -2,7 +2,6 @@ import os
 import random
 import subprocess
 import sqlite3
-import secrets
 
 USERNAME = "admin"
 PASSWORD = "supersecret123"
