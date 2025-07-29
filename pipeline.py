@@ -2,7 +2,7 @@ from agent.llm_wrapper import LLMInference
 from agent.parse_response import extract_python_code_from_response, execute_result_code
 from bandit_wrapper.run_bandit import run_bandit
 
-def run_pipeline(code_file: str = "data/test_vuln.py", llm: LLMInference = None) -> dict:
+def run_pipeline(code_file: str = "data/test_vuln.py", llm: LLMInference = None) -> list:
     """
     Run the LLM inference pipeline with the given prompt and model.
     :param code_file: Path to the code file to analyze
@@ -25,27 +25,38 @@ def run_pipeline(code_file: str = "data/test_vuln.py", llm: LLMInference = None)
         code = f.read().strip()
     print(f"Code file '{code_file}' loaded.")
     
-    bandit_report = str(run_bandit(code_file))
+    bandit_report = run_bandit(code_file)
     print("Bandit report generated.")
-    
-    user_prompt = user_prompt.format(code_snippet=code, report=bandit_report)
 
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_prompt}
-    ]
+    results = []
 
-    response = llm.inference(messages)
-    print("LLM response generated.")
+    for i, issue in enumerate(bandit_report):
+        issue_prompt = user_prompt.format(code_snippet=code, report=str(issue))
+        
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": issue_prompt}
+        ]
 
-    code = extract_python_code_from_response(response)
-    print("Generated code:")
-    print(response)
+        response = llm.inference(messages)
+        print(f"LLM response for issue {i+1} generated.")
 
-    parsed = execute_result_code(code)
-    print("LLM response parsed.")
+        code = extract_python_code_from_response(response)
+        parsed = execute_result_code(code)
+        print(f"LLM response for issue {i+1} parsed.")
 
-    return parsed
+        parsed["metadata"] = {
+            "line_number": issue["line_number"],
+            "code" : issue["code"],
+            "issue_severity": issue["issue_severity"],
+            "issue_text": issue["issue_text"],
+            "issue_cwe" : issue["issue_cwe"]
+        }
+        print(f"Metadata for issue {i+1} added.")
+
+        results.append(parsed)
+
+    return results
 
 
 if __name__ == "__main__":
@@ -54,7 +65,14 @@ if __name__ == "__main__":
     llm = LLMInference(model_name=model_name, device="mps")
 
     output = run_pipeline("data/test_vuln2.py", llm)
-    print("Parsed LLM output:")
     print("------------------")
-    for key, value in output.items():
-        print(f"{key}: {value}")
+    print("\nParsed LLM output:")
+    print("------------------")
+    for i, res in enumerate(output):
+        print(f"\nIssue {i+1}:")
+        print("Classification: ", res["classification"])
+        print("Explanation: ", res["explanation"])
+        print("Metadata:")
+        for key, value in res["metadata"].items():
+            print(f"  {key.capitalize()}: {value}")
+        print()
