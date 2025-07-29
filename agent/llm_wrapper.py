@@ -2,23 +2,30 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
 class LLMInference:
-    def __init__(self, model_name="deepseek-ai/deepseek-coder-1.3b-instruct", device=None):
+    def __init__(self, model_name: str = None,
+                 device: str = "mps" if torch.backends.mps.is_available() else ("cuda" if torch.cuda.is_available() else "cpu")):
         """
-        Initialize the LLM and tokenizer.
-        :param model_name: HuggingFace model repo
-        :param device: "mps" or "cuda" or "cpu", auto-detect if None
+        Initialize the LLM Inference wrapper.
+        :param model_name: HuggingFace model repo to load
+        :param device: Device to load the model on (default: mps if available, else cuda or cpu)
         """
-        self.device = device or "mps" if torch.backends.mps.is_available() else ("cuda" if torch.cuda.is_available() else "cpu")
-        print(f"Loading model '{model_name}' on {self.device}")
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModelForCausalLM.from_pretrained(model_name).to(self.device)
+        self.model = None
+        self.tokenizer = None
+        self.device = device
+        
+        if not model_name:
+            print("No model name provided, using default model.")
+            model_name = "deepseek-ai/deepseek-coder-1.3b-instruct"
 
-    def generate(self, messages, max_tokens=1024, temperature=0.0):
+        self.model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, device_map="auto")
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+    def inference(self, messages: dict, max_tokens: int = 1024, temperature: float = 0.0) -> str:
         """
         Generate a response from chat-style messages using apply_chat_template.
         :param messages: List of dicts with role/content format (chat style)
         :param max_tokens: Max new tokens to generate
-        :param temperature: Sampling temperature (0 = deterministic)
+        :param temperature: Sampling temperature (0.0 = deterministic)
         :return: Generated string
         """
         # Format chat template input
@@ -35,7 +42,6 @@ class LLMInference:
             inputs,
             max_new_tokens=max_tokens,
             do_sample=(temperature > 0),
-            # temperature=temperature,
             eos_token_id=self.tokenizer.eos_token_id,
             pad_token_id=self.tokenizer.eos_token_id,
         )
@@ -46,13 +52,3 @@ class LLMInference:
         )
 
         return decoded
-
-
-if __name__ == "__main__":
-    llm = LLMInference()
-    prompt = "def add(a, b):\n    return a + b\n\n# Tell me what this function does."
-    messages = [
-        {"role": "user", "content": prompt}
-    ]
-    output = llm.generate(messages)
-    print("LLM output:", output)
