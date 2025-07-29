@@ -19,8 +19,12 @@ def extract_python_code_from_response(response: str) -> str:
     dict_like = re.search(r"({\s*['\"]classification['\"].*?['\"]explanation['\"].*?})", response, re.DOTALL | re.IGNORECASE)
     if dict_like:
         return f"result = {dict_like.group(1).strip()}"
-
-    raise ValueError("No valid Python code or dictionary found in the response.")
+    
+    print("[Warning] No valid Python code or dictionary found in the response.")
+    return """result = {
+    "classification": "Not Sure",
+    "explanation": "Failed to parse or extract valid Python code from the LLM response.
+    }"""
 
 def execute_result_code(code: str) -> dict:
     """
