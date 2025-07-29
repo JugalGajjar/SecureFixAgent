@@ -9,5 +9,5 @@ Code Snippet:
 
 ---
 
-Bandit Report:
+Bandit Reported Issue Instance:
 {report}

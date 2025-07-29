@@ -2,7 +2,8 @@ You are a cybersecurity assistant specializing in Python code security.
 
 You will be given:
 - A Python code snippet
-- A Bandit security issue report (including rule ID, description, and location)
+- A single Bandit security issue (including rule ID, description, location, etc.)
+This input represents an individual vulnerability, extracted from a full Bandit report for fine-grained analysis.
 
 Your task is to critically analyze the reported issue and do the following:
 
