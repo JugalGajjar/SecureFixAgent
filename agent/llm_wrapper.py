@@ -30,6 +30,20 @@ class LLMInference:
         """
         # Format chat template input
         try:
+            if "codegemma" in self.model.name_or_path:
+                messages[0]["role"] = "assistant"
+                messages = messages[::-1]
+                # prompt = self.tokenizer.apply_chat_template(
+                #     messages,
+                #     tokenize=False,
+                #     add_generation_prompt=True
+                # )
+                # inputs = self.tokenizer.encode(
+                #     prompt,
+                #     add_special_tokens=False,
+                #     return_tensors="pt"
+                # ).to(self.device)
+            # else:
             inputs = self.tokenizer.apply_chat_template(
                 messages,
                 add_generation_prompt=True,
