@@ -18,7 +18,6 @@ def calculate_expression(expr):
 def get_user_data(user_id):
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
-    # Use parameterized queries to prevent SQL injection
     cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
     data = cursor.fetchone()
     conn.close()
@@ -40,10 +39,3 @@ if __name__ == "__main__":
 
     user_id = input("Enter user ID to fetch: ")
     print("User Data:", get_user_data(user_id))
-
-# | Function               | CWE ID | Issue Type                | Secure?
-# | ---------------------- | ------ | ------------------------- | -------
-# | generate_token()       | 330    | Predictable RNG           | ❌ 
-# | calculate_expression() | 95     | Eval injection            | ❌ 
-# | delete_file()          | 78     | Shell command injection   | ❌ 
-# | get_user_data()        | 89     | SQL Injection (Prevented) | ✅ 
