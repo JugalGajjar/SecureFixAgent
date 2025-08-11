@@ -1,0 +1,12 @@
+Below is the complete original code file:
+{original_code}
+
+---
+
+Here is the Bandit security report for this vulnerability:
+{bandit_report_instance}
+
+---
+
+Here is the LLM generated classification and explanation for the Bandit report instance:
+{llm_response}
