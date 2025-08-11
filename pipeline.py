@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     llm = LLMInference(model_name=model_name, device="mps")
 
-    output = run_pipeline("data/test_vuln2.py", llm)
+    output = run_pipeline("data/test_vuln.py", llm)
     print("------------------")
     print("\nParsed LLM output:")
     print("------------------")
