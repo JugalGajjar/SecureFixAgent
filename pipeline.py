@@ -72,7 +72,7 @@ def run_pipeline(code_file: str = "data/vulnerable/test_vuln.py", llm: LLMInfere
         results.append(parsed)
     
     with open(f"data/fixed/{code_file.split('/')[-1]}", "w") as f:
-        f.write(results[-1]["fixed_code"])
+        f.write(results[0]["fixed_code"])
 
     return results
 
@@ -84,10 +84,8 @@ if __name__ == "__main__":
 
     output = run_pipeline("data/vulnerable/test_vuln.py", llm)
     os.system("clear")
-    for result in output:
-        print(f"Original Code:{result["original_code"]}")
-        print(f"Fixed Code:{result["fixed_code"]}")
-        print(f"Bandit Report:{result["bandit_report"]}")
-        print(f"Classification Explanation:{result["classification_explanation"]}")
-        print(f"Why Safe:{result["why_safe"]}")
-        print("-" * 80)
+    print(output[0]["original_code"])
+    print("-" * 80)
+    print(output[0]["fixed_code"])
+    print("-" * 80)
+    print(output[0]["why_safe"])
