@@ -13,7 +13,7 @@ Fix **only** the security vulnerability identified in the Bandit report while pr
 
 ### **Strict rules:**
 
-1. Make the smallest possible change that fully mitigates the vulnerability.
+1. Make the smallest possible change that fully mitigates only the vulnerability denoted in the given Bandit report instance.
 2. Do not modify or refactor unrelated code, rename variables, or alter comments unless strictly necessary for the fix.
 3. Maintain the original logic, algorithms, function signatures, and structure.
 4. Preserve existing indentation, formatting, and inline comments.
