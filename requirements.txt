@@ -3,3 +3,6 @@ transformers
 torch
 accelerate
 sentencepiece
+huggingface-hub
+mlx
+mlx-lm
