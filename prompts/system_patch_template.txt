@@ -21,7 +21,7 @@ Fix **only** the security vulnerability identified in the Bandit report while pr
 6. Only modify the vulnerable segment unless another change is absolutely required for the patch to function.
 7. Never remove or replace unrelated functionality.
 8. Keep small **inline comments** in the fixed code explaining the applied fix.
-9. The fixed code must be the **entire file content**, identical to the original except for the applied fix.
+9. The fixed code must be the **entire file content**, identical to the original except for the applied fix; no placeholders.
 
 ---
 
@@ -30,7 +30,7 @@ Fix **only** the security vulnerability identified in the Bandit report while pr
 * Analyze the provided **original code file**, **Bandit report instance**, and **LLM classification/explanation**.
 * Identify the exact vulnerable code segment.
 * Apply the smallest effective patch that removes the vulnerability.
-* Preserve the rest of the code exactly as in the original file.
+* Preserve the rest of the code exactly as in the original file; no placeholders, just the exact rest of the code.
 * Ensure the fix is syntactically valid, secure, and ready for production.
 
 ---
