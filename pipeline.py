@@ -45,16 +45,6 @@ def run_pipeline(code_file: str = "data/vulnerable/test_vuln.py", llm: LLMInfere
         code = extract_python_code_from_phase1_response(response)
         parsed = execute_phase1_code(code)
 
-        print("Phase 1: Classification and Explanation Finished")
-
-        # parsed["metadata"] = {
-        #     "line_number": issue["line_number"],
-        #     "code" : issue["code"],
-        #     "issue_severity": issue["issue_severity"],
-        #     "issue_text": issue["issue_text"],
-        #     "issue_cwe" : issue["issue_cwe"]
-        # }
-
         patch_prompt = user_patch_prompt.format(original_code=code, bandit_report_instance=str(issue), llm_response=parsed)
 
         messages = [
@@ -67,9 +57,11 @@ def run_pipeline(code_file: str = "data/vulnerable/test_vuln.py", llm: LLMInfere
         code = extract_patch_from_phase2_response(response)
         parsed = execute_phase2_code(code)
 
-        print("Phase 2: Patch Generation Finished")
-
         results.append(parsed)
+    
+    for i in range(len(results)):
+        results[i]["original_code"] = results[i]["original_code"].strip().replace("\\\"", "\"")
+        results[i]["fixed_code"] = results[i]["fixed_code"].strip().replace("\\\"", "\"")
     
     with open(f"data/fixed/{code_file.split('/')[-1]}", "w") as f:
         f.write(results[0]["fixed_code"])
