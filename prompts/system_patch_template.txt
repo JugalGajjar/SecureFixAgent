@@ -41,9 +41,9 @@ Return your answer **only** as valid Python code assigning a dictionary to a var
 ```python
 result = {
     "original_code": "<Exact entire original code file>",
-    "fixed_code": "<Entire fixed code file>",
+    "fixed_code": "<Entire fixed code file (exact entire rest of the code incorporating the security fix)>",
     "bandit_report": "<Exact Bandit report instance provided>",
     "classification_explanation": "<Exact classification/explanation provided>",
-    "why_safe": "<Concise reason why this fix resolves the vulnerability and is secure>"
+    "why_safe": "<Concise reason how the fixed code resolves the vulnerability(ies) and why it is secure>"
 }
 ```
