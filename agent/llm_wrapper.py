@@ -20,7 +20,7 @@ class LLMInference:
         self.model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, device_map="auto")
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-    def inference(self, messages: dict, max_tokens: int = 1024, temperature: float = 0.0) -> str:
+    def inference(self, messages: dict, max_tokens: int = 3072, temperature: float = 0.0) -> str:
         """
         Generate a response from chat-style messages using apply_chat_template.
         :param messages: List of dicts with role/content format (chat style)
